@@ -8,9 +8,18 @@ using NorthWind.Models;
 using Serilog;
 using System.Data;
 
+public interface ICategoryController
+{
+    ActionResult<IEnumerable<CategoryDTO>> GetAllCategories();
+    ActionResult<CategoryDTO> GetByIdCategory(int id);
+    Task<IActionResult> newDeleteCategory(int id);
+    ActionResult<CategoryDTO> PostCategory(CategoryDTO category);
+    Task<IActionResult> PutCategory(int id, CategoryDTO category);
+}
+
 [Route("api/[controller]")]
 [ApiController]
-public class CategoryController : ControllerBase
+public class CategoryController : ControllerBase, ICategoryController
 {
     private readonly string _connectionString;
     private readonly testContext _context;
@@ -23,7 +32,7 @@ public class CategoryController : ControllerBase
 
     // GET: api/Category
     [HttpGet]
-    public ActionResult<IEnumerable<CategoryDTO>> GetCategories()
+    public ActionResult<IEnumerable<CategoryDTO>> GetAllCategories()
     {
         using (IDbConnection dbConnection = new SqlConnection(_connectionString))
         {
@@ -54,7 +63,7 @@ public class CategoryController : ControllerBase
 
     // GET: api/Category/5
     [HttpGet("{id}")]
-    public ActionResult<CategoryDTO> GetCategory(int id)
+    public ActionResult<CategoryDTO> GetByIdCategory(int id)
     {
         using (IDbConnection dbConnection = new SqlConnection(_connectionString))
         {
@@ -101,41 +110,52 @@ public class CategoryController : ControllerBase
     }
 
     // PUT: api/Category/5
+    //public IActionResult PutCategory(int id, CategoryDTO category)
+    //{
+    //    if (id != category.CategoryId)
+    //    {
+    //        Log.Information("Invalid request: CategoryId in the URL does not match the category data.");
+    //        return BadRequest();
+    //    }
+
+    //    using (IDbConnection dbConnection = new SqlConnection(_connectionString))
+    //    {
+    //        dbConnection.Open();
+    //        string updateQuery = "UPDATE Categories SET CategoryName = @CategoryName, Description = @Description WHERE CategoryId = @CategoryId";
+
+    //        try
+    //        {
+    //            int affectedRows = dbConnection.Execute(updateQuery, category);
+
+    //            if (affectedRows == 0)
+    //            {
+    //                Log.Information($"Category with ID {id} not found.");
+    //                return NotFound();
+    //            }
+
+    //            Log.Information($"Updated category with ID {id}");
+    //            return NoContent();
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Log.Error(ex, $"Error while updating the category with ID {id}");
+    //            return StatusCode(500, "An error occurred while processing your request.");
+    //        }
+    //    }
+    //}
     [HttpPut("{id}")]
-    public IActionResult PutCategory(int id, CategoryDTO category)
+    public async Task<IActionResult> PutCategory(int id, CategoryDTO category)
     {
-        if (id != category.CategoryId)
+        var categories = await _context.Categories.FindAsync(id);
+        if (categories == null)
         {
-            Log.Information("Invalid request: CategoryId in the URL does not match the category data.");
-            return BadRequest();
+            return NotFound();
         }
-
-        using (IDbConnection dbConnection = new SqlConnection(_connectionString))
-        {
-            dbConnection.Open();
-            string updateQuery = "UPDATE Categories SET CategoryName = @CategoryName, Description = @Description WHERE CategoryId = @CategoryId";
-
-            try
-            {
-                int affectedRows = dbConnection.Execute(updateQuery, category);
-
-                if (affectedRows == 0)
-                {
-                    Log.Information($"Category with ID {id} not found.");
-                    return NotFound();
-                }
-
-                Log.Information($"Updated category with ID {id}");
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, $"Error while updating the category with ID {id}");
-                return StatusCode(500, "An error occurred while processing your request.");
-            }
-        }
+        await _context.Categories.Where(p => p.CategoryId == id).ExecuteUpdateAsync(p => p
+        .SetProperty(x => x.CategoryName, x => category.CategoryName)
+        .SetProperty(x => x.Description, x => category.Description));
+        return Ok();
     }
-
     //DELETE: api/Category/5
     //    [HttpDelete("{id}")]
     //    public IActionResult DeleteCategory(int id)
@@ -174,8 +194,12 @@ public class CategoryController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> newDeleteCategory(int id)
     {
-        var c = _context.Categories.Where(b => b.CategoryId == id);
-        var a = _context.Categories.Where(b => b.CategoryId == id).ExecuteDelete(); ;
+        var categories = await _context.Categories.FindAsync(id);
+        if (categories == null)
+        {
+            return NotFound();
+        }
+
         var cate = await _context.Categories.Where(c => c.CategoryId == id).ExecuteDeleteAsync();
         return Ok();
     }

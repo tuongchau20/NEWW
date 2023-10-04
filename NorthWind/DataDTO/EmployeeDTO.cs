@@ -1,4 +1,6 @@
-﻿namespace NorthWind.DataDTO
+﻿using NorthWind.Models;
+
+namespace NorthWind.DataDTO
 {
     public class EmployeeDTO
     {
@@ -9,7 +11,7 @@
         public string Photo { get; set; }
         public string Notes { get; set; }
 
-        public EmployeeDTO(Models.Employee? employee)
+        public EmployeeDTO()
         {
             
         }
@@ -22,6 +24,11 @@
             BirthDate = sourceEmployee.BirthDate;
             Photo = sourceEmployee.Photo;
             Notes = sourceEmployee.Notes;
+        }
+
+        public EmployeeDTO(Employee? employee)
+        {
+
         }
     }
 }

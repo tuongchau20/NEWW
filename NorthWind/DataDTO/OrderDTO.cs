@@ -27,12 +27,11 @@ namespace NorthWind.DataDTO
             OrderDate = sourceOrder.OrderDate;
             ShipperId = sourceOrder.ShipperId;
 
-            // You can also map the related DTO objects and the collection
+            
             Customer = new CustomerDTO(sourceOrder.Customer);
             Employee = new EmployeeDTO(sourceOrder.Employee);
             Shipper = new ShipperDTO(sourceOrder.Shipper);
 
-            // To map the collection, you may need to loop through the OrderDetail entities
             Details = sourceOrder.OrderDetails.Select(detail => new OrderDetailDTO(detail)).ToList();
         }
     }

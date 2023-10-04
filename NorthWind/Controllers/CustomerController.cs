@@ -12,9 +12,18 @@ using System.Data;
 
 namespace NorthWind.Controllers
 {
+    public interface ICustomerController
+    {
+        Task<IActionResult> DeleteCustomer(int id);
+        ActionResult<IEnumerable<CustomerDTO>> GetAllCustomers();
+        ActionResult<CustomerDTO> GetCustomerById(int id);
+        ActionResult<CustomerDTO> PostCustomer(CustomerDTO customer);
+        Task<IActionResult> PutCustomer(int id, CustomerDTO customer);
+    }
+
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class CustomerController : ControllerBase, ICustomerController
     {
         private readonly string _connectionString;
         private readonly testContext _context;
@@ -115,7 +124,7 @@ namespace NorthWind.Controllers
             .SetProperty(x => x.City, x => customer.City)
             .SetProperty(x => x.PostalCode, x => customer.PostalCode)
             .SetProperty(x => x.Country, x => customer.Country)
-            
+
 
             );
 

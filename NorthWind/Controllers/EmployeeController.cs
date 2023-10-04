@@ -12,9 +12,18 @@ using System.Data;
 
 namespace NorthWind.Controllers
 {
+    public interface IEmployeeController
+    {
+        Task<IActionResult> DeleteEmployee(int id);
+        ActionResult<IEnumerable<EmployeeDTO>> GetAllEmployees();
+        ActionResult<EmployeeDTO> GetEmployeeById(int id);
+        ActionResult<EmployeeDTO> PostCustomer(EmployeeDTO employee);
+        Task<IActionResult> PutEmployee(int id, EmployeeDTO employee);
+    }
+
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeeController : ControllerBase
+    public class EmployeeController : ControllerBase, IEmployeeController
     {
         private readonly string? _connectionString;
         private readonly testContext _context;

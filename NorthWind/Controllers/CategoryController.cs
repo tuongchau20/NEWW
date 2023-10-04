@@ -137,46 +137,46 @@ public class CategoryController : ControllerBase
     }
 
     //DELETE: api/Category/5
-    [HttpDelete("{id}")]
-    public IActionResult DeleteCategory(int id)
-    {
-        using (IDbConnection dbConnection = new SqlConnection(_connectionString))
-        {
-            dbConnection.Open();
-            string deleteQuery = "DELETE FROM Categories WHERE CategoryId = @Id";
+    //    [HttpDelete("{id}")]
+    //    public IActionResult DeleteCategory(int id)
+    //    {
+    //        using (IDbConnection dbConnection = new SqlConnection(_connectionString))
+    //        {
+    //            dbConnection.Open();
+    //            string deleteQuery = "DELETE FROM Categories WHERE CategoryId = @Id";
 
-            try
-            {
-                int affectedRows = dbConnection.Execute(deleteQuery, new { Id = id });
+    //            try
+    //            {
+    //                int affectedRows = dbConnection.Execute(deleteQuery, new { Id = id });
 
-                if (affectedRows == 0)
-                {
-                    Log.Information($"Category with ID {id} not found.");
-                    return NotFound();
-                }
+    //                if (affectedRows == 0)
+    //                {
+    //                    Log.Information($"Category with ID {id} not found.");
+    //                    return NotFound();
+    //                }
 
-                Log.Information($"Deleted category with ID {id}");
-                var rs = new Response<CategoryDTO>
-                {
-                    status = 200,
-                    message = "Successfully",
-                };
-                return Ok(rs);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, $"Error while deleting the category with ID {id}");
-                return BadRequest(ex.Message);
-            }
-        }
-    }
-}
-    //[HttpDelete("{id}")]
-    //public async Task<IActionResult> newDeleteCategory(int id)
-    //{
-    //    var c = _context.Categories.Where(b => b.CategoryId == id);
-    //    var a = _context.Categories.Where(b => b.CategoryId == id).ExecuteDelete(); ;
-    //    var cate = await _context.Categories.Where(c => c.CategoryId == id).ExecuteDeleteAsync();
-    //    return Ok();
+    //                Log.Information($"Deleted category with ID {id}");
+    //                var rs = new Response<CategoryDTO>
+    //                {
+    //                    status = 200,
+    //                    message = "Successfully",
+    //                };
+    //                return Ok(rs);
+    //            }
+    //            catch (Exception ex)
+    //            {
+    //                Log.Error(ex, $"Error while deleting the category with ID {id}");
+    //                return BadRequest(ex.Message);
+    //            }
+    //        }
+    //    }
     //}
-    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> newDeleteCategory(int id)
+    {
+        var c = _context.Categories.Where(b => b.CategoryId == id);
+        var a = _context.Categories.Where(b => b.CategoryId == id).ExecuteDelete(); ;
+        var cate = await _context.Categories.Where(c => c.CategoryId == id).ExecuteDeleteAsync();
+        return Ok();
+    }
+}    

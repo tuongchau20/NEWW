@@ -60,33 +60,14 @@ public class CategoryController : ControllerBase
         {
             dbConnection.Open();
             string query = "SELECT * FROM Categories WHERE CategoryId = @Id";
+            var category = dbConnection.QueryFirstOrDefault<CategoryDTO>(query, new { Id = id });
 
-            try
+            if (category == null)
             {
-                var category = dbConnection.QueryFirstOrDefault<CategoryDTO>(query, new { Id = id });
-
-                if (category == null)
-                {
-                    Log.Information("Category with ID {CategoryId} not found.", id);
-                    return NotFound();
-                }
-
-                IEnumerable<CategoryDTO> categories = dbConnection.Query<CategoryDTO>(query);
-
-                Log.Information("Retrieved category with ID {CategoryId} from the database.", id);
-                var rs = new Response<CategoryDTO>
-                {
-                    status = 200,
-                    message = "Successfully",
-                    data = categories
-                };
-                return Ok(rs);
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error while retrieving the category from the database.");
-                return BadRequest(ex.Message);
-            }
+
+            return Ok(category);
         }
     }
 

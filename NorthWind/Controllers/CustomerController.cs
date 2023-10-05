@@ -86,7 +86,7 @@ namespace NorthWind.Controllers
             using (IDbConnection dbConnection = new SqlConnection(_connectionString))
             {
                 dbConnection.Open();
-                string insertQuery = "INSERT INTO Customers (CustomerName,ContactName,Address,City,PostalCode,Country) VALUES (@customerName, @customerName,@address,@city, @postalCode,@country)";
+                string insertQuery = "INSERT INTO Customers (CustomerName,ContactName,Address,City,PostalCode,Country) VALUES (@CustomerName, @ContactName,@Address,@City, @PostalCode,@Country)";
 
                 try
                 {

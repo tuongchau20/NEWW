@@ -5,7 +5,6 @@ namespace NorthWind.Models
 {
     public partial class Category
     {
-        internal int cateId;
 
         public Category()
         {

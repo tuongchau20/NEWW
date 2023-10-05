@@ -1,34 +1,37 @@
-﻿using Dapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using Microsoft.AspNetCore.Mvc;
+using Dapper;
 using Microsoft.Data.SqlClient;
 using NorthWind.DataDTO;
-using System.Data;
+using NorthWind.Models;
 
 namespace NorthWind.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ShipperController : ControllerBase
+    public class OrderController : ControllerBase
     {
         private readonly string _connectionString;
 
-        public ShipperController(IConfiguration configuration)
+        public OrderController(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ShipperDTO>> GetAllShippers()
+        public ActionResult<IEnumerable<OrderDTO>> GetAllOrders()
         {
             using (IDbConnection dbConnection = new SqlConnection(_connectionString))
             {
                 dbConnection.Open();
-                string query = "SELECT * FROM Shippers";
+                string query = "SELECT * FROM Orders";
 
                 try
                 {
-                    IEnumerable<ShipperDTO> shippers = dbConnection.Query<ShipperDTO>(query);
-                    return Ok(shippers);
+                    IEnumerable<OrderDTO> orders = dbConnection.Query<OrderDTO>(query);
+                    return Ok(orders);
                 }
                 catch (Exception ex)
                 {
@@ -38,35 +41,35 @@ namespace NorthWind.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ShipperDTO> GetShipperById(int id)
+        public ActionResult<OrderDTO> GetOrderById(int id)
         {
             using (IDbConnection dbConnection = new SqlConnection(_connectionString))
             {
                 dbConnection.Open();
-                string query = "SELECT * FROM Shippers WHERE ShipperId = @Id";
-                var shipper = dbConnection.QueryFirstOrDefault<ShipperDTO>(query, new { Id = id });
+                string query = "SELECT * FROM Orders WHERE OrderId = @Id";
+                var order = dbConnection.QueryFirstOrDefault<OrderDTO>(query, new { Id = id });
 
-                if (shipper == null)
+                if (order == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(shipper);
+                return Ok(order);
             }
         }
 
         [HttpPost]
-        public ActionResult<ShipperDTO> CreateShipper(ShipperDTO shipper)
+        public ActionResult<OrderDTO> CreateOrder(OrderDTO order)
         {
             using (IDbConnection dbConnection = new SqlConnection(_connectionString))
             {
                 dbConnection.Open();
-                string insertQuery = "INSERT INTO Shippers (ShipperName, Phone) VALUES (@ShipperName, @Phone)";
+                string insertQuery = "INSERT INTO Orders (CustomerId, EmployeeId, OrderDate, ShipperId) VALUES (@CustomerId, @EmployeeId, @OrderDate, @ShipperId)";
 
                 try
                 {
-                    dbConnection.Execute(insertQuery, shipper);
-                    return Ok("Shipper created successfully.");
+                    dbConnection.Execute(insertQuery, order);
+                    return Ok("Order created successfully.");
                 }
                 catch (Exception ex)
                 {
@@ -76,17 +79,17 @@ namespace NorthWind.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<ShipperDTO> UpdateShipper(int id, ShipperDTO shipper)
+        public ActionResult<OrderDTO> UpdateOrder(int id, OrderDTO order)
         {
             using (IDbConnection dbConnection = new SqlConnection(_connectionString))
             {
                 dbConnection.Open();
-                string updateQuery = "UPDATE Shippers SET ShipperName = @ShipperName, Phone = @Phone WHERE ShipperId = @Id";
+                string updateQuery = "UPDATE Orders SET CustomerId = @CustomerId, EmployeeId = @EmployeeId, OrderDate = @OrderDate, ShipperId = @ShipperId WHERE OrderId = @Id";
 
                 try
                 {
-                    dbConnection.Execute(updateQuery, new { ShipperName = shipper.ShipperName, Phone = shipper.Phone, Id = id });
-                    return Ok("Shipper updated successfully.");
+                    dbConnection.Execute(updateQuery, new { CustomerId = order.CustomerId, EmployeeId = order.EmployeeId, OrderDate = order.OrderDate, ShipperId = order.ShipperId, Id = id });
+                    return Ok("Order updated successfully.");
                 }
                 catch (Exception ex)
                 {
@@ -96,17 +99,17 @@ namespace NorthWind.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteShipper(int id)
+        public ActionResult DeleteOrder(int id)
         {
             using (IDbConnection dbConnection = new SqlConnection(_connectionString))
             {
                 dbConnection.Open();
-                string deleteQuery = "DELETE FROM Shippers WHERE ShipperId = @Id";
+                string deleteQuery = "DELETE FROM Orders WHERE OrderId = @Id";
 
                 try
                 {
                     dbConnection.Execute(deleteQuery, new { Id = id });
-                    return Ok("Shipper deleted successfully.");
+                    return Ok("Order deleted successfully.");
                 }
                 catch (Exception ex)
                 {

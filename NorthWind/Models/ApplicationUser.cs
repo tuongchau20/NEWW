@@ -1,11 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NorthWind.Models
 {
+    [Table("ApplicationUser")]
     public class ApplicationUser:IdentityUser
     {
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-
+        [Column("FirstName")]
+        public string FirstName { get; set; }
+        [Column("LastName")]
+        public string LastName { get; set; }
+        [Column("RefreshToken")]
+        public string? RefreshToken { get; set; }
+        [Column("RefreshTokenValidity")]
+        public DateTime? RefreshTokenValidity { get; set; }
     }
 }

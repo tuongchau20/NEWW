@@ -12,8 +12,8 @@ using NorthWind.Models;
 namespace NorthWind.Migrations
 {
     [DbContext(typeof(testContext))]
-    [Migration("20231006041402_AddIdentityAuthenication")]
-    partial class AddIdentityAuthenication
+    [Migration("20231006134436_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,11 +156,13 @@ namespace NorthWind.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("FirstName");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("LastName");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -183,6 +185,14 @@ namespace NorthWind.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("RefreshToken");
+
+                    b.Property<DateTime?>("RefreshTokenValidity")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("RefreshTokenValidity");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -194,7 +204,7 @@ namespace NorthWind.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("ApplicationUser");
                 });
 
             modelBuilder.Entity("NorthWind.Models.Category", b =>

@@ -17,7 +17,6 @@ namespace NorthWind.Models
             : base(options)
         {
         }
-
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<Customer> Customers { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;

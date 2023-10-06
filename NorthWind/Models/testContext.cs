@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace NorthWind.Models
 {
-    public partial class testContext : DbContext
+    public partial class testContext : IdentityDbContext<ApplicationUser>
     {
         public testContext()
         {
@@ -36,6 +38,9 @@ namespace NorthWind.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity <IdentityUserLogin<string>>().HasNoKey();
+            modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();
+            modelBuilder.Entity<IdentityUserToken<string>>().HasNoKey();
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.Property(e => e.CategoryId).HasColumnName("CategoryID");

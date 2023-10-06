@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -82,6 +83,7 @@ public class CategoryController : ControllerBase, ICategoryController
 
     // POST: api/Category
     [HttpPost]
+    [Authorize]
     public ActionResult<CategoryDTO> PostCategory(CategoryDTO category)
     {
         using (IDbConnection dbConnection = new SqlConnection(_connectionString))
@@ -192,6 +194,7 @@ public class CategoryController : ControllerBase, ICategoryController
     //    }
     //}
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> newDeleteCategory(int id)
     {
         var categories = await _context.Categories.FindAsync(id);

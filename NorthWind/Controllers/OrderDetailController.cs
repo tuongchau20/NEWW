@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +7,7 @@ using NorthWind.DataDTO;
 using NorthWind.Helpers;
 using NorthWind.Models;
 using Serilog;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Threading.Tasks;
 
 namespace NorthWind.Controllers
 {
@@ -122,7 +118,7 @@ namespace NorthWind.Controllers
             await _context.OrderDetails.Where(p => p.OrderId == id).ExecuteUpdateAsync(p => p
             .SetProperty(x => x.ProductId, x => orderdetails.ProductId)
             .SetProperty(x => x.Quantity, x => orderdetails.Quantity)
-        
+
 
 
             );
@@ -143,4 +139,4 @@ namespace NorthWind.Controllers
             return Ok();
         }
     }
-    }
+}

@@ -32,6 +32,7 @@ public class CategoryController : ControllerBase, ICategoryController
     }
 
     // GET: api/Category
+    [Authorize]
     [HttpGet]
     public ActionResult<IEnumerable<CategoryDTO>> GetAllCategories()
     {

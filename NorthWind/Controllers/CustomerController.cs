@@ -124,8 +124,6 @@ namespace NorthWind.Controllers
             .SetProperty(x => x.City, x => customer.City)
             .SetProperty(x => x.PostalCode, x => customer.PostalCode)
             .SetProperty(x => x.Country, x => customer.Country)
-
-
             );
 
             return Ok();

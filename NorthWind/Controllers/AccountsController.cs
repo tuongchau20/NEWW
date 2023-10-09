@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using NorthWind.Models.account;
 using NorthWind.Repositories;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -80,10 +81,10 @@ namespace NorthWind.Controllers
         private bool IsValidRefreshToken(string refreshToken, DateTime refreshTokenValidity)
         {
             // Kiểm tra tính hợp lệ của refresh token dựa trên quy tắc của bạn, ví dụ: so sánh với thời gian hiện tại
-            return !string.IsNullOrEmpty(refreshToken) && refreshTokenValidity >= DateTime.UtcNow;
+            return !string.IsNullOrEmpty(refreshToken) && refreshTokenValidity >= DateTime.Now;
         }
 
-        private string GenerateAccessToken(ApplicationUser user)
+        private JwtSecurityToken GenerateAccessToken(ApplicationUser user)
         {
             var authClaims = new[]
             {
@@ -100,8 +101,7 @@ namespace NorthWind.Controllers
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authenKey, SecurityAlgorithms.HmacSha512Signature)
             );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return token;
         }
 
 

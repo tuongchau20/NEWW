@@ -43,8 +43,8 @@
 
             // Lưu trữ refresh token và thời gian hết hạn trong cơ sở dữ liệu
             user.RefreshToken = refreshToken;
-            user.RefreshTokenValidity = DateTime.UtcNow.AddMinutes(15); // Ví dụ: hết hạn sau 15 phút
-
+            user.RefreshTokenValidity = DateTime.Now.AddMinutes(15); // Ví dụ: hết hạn sau 15 phút
+            await _usermanager.UpdateAsync(user);
             // Tạo danh sách các Claim, bao gồm Claim về userName
             var authClaims = new List<Claim>
     {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NorthWind.Models;
 
@@ -11,9 +12,11 @@ using NorthWind.Models;
 namespace NorthWind.Migrations
 {
     [DbContext(typeof(testContext))]
-    partial class testContextModelSnapshot : ModelSnapshot
+    [Migration("20231016023457_AddRoleNameColumn")]
+    partial class AddRoleNameColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

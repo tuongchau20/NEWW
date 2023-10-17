@@ -17,7 +17,7 @@ public interface ICategoryController
     ActionResult<CategoryDTO> PostCategory(CategoryDTO category);
     Task<IActionResult> PutCategory(int id, CategoryDTO category);
 }
-
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class CategoryController : ControllerBase, ICategoryController
@@ -32,7 +32,6 @@ public class CategoryController : ControllerBase, ICategoryController
     }
 
     // GET: api/Category
-    [Authorize]
     [HttpGet]
     public ActionResult<IEnumerable<CategoryDTO>> GetAllCategories()
     {
@@ -64,6 +63,7 @@ public class CategoryController : ControllerBase, ICategoryController
     }
 
     // GET: api/Category/5
+    
     [HttpGet("{id}")]
     public ActionResult<CategoryDTO> GetByIdCategory(int id)
     {
@@ -195,7 +195,6 @@ public class CategoryController : ControllerBase, ICategoryController
     //    }
     //}
     [HttpDelete("{id}")]
-    [Authorize]
     public async Task<IActionResult> newDeleteCategory(int id)
     {
         var categories = await _context.Categories.FindAsync(id);

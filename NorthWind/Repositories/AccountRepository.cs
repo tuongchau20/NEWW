@@ -57,7 +57,7 @@
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddMinutes(20), // Thời gian hết hạn của access token
+                expires: DateTime.UtcNow.AddMinutes(20), // Thời gian hết hạn của access token
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authenKey, SecurityAlgorithms.HmacSha512Signature)
             );

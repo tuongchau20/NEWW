@@ -59,7 +59,7 @@ using (var sqlConnection = new SqlConnection(connectionString))
                         var columnName = sqlDataReader.GetName(i);
                         var columnValue = sqlDataReader.GetValue(i);
 
-                        if (columnValue != DBNull.Value) // Kiểm tra giá trị không phải DBNull
+                        if (columnValue != DBNull.Value) 
                         {
                             BsonValue bsonValue = BsonValue.Create(columnValue);
                             bsonDocument.Add(columnName, bsonValue);

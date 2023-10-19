@@ -13,7 +13,6 @@ namespace NorthWind.Models.account
         public string? RefreshToken { get; set; }
         [Column("RefreshTokenValidity")]
         public DateTime RefreshTokenValidity { get; set; }
-        public string? RoleName { get; set; }
 
     }
 }

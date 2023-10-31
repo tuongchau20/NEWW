@@ -30,7 +30,7 @@ public class CategoryController : ControllerBase, ICategoryController
         _connectionString = configuration.GetConnectionString("DefaultConnection");
         _context = context;
     }
-
+    //somechangeâ
     // GET: api/Category
     [HttpGet]
     public ActionResult<IEnumerable<CategoryDTO>> GetAllCategories()

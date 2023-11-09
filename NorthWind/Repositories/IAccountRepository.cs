@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using NorthWind.Models;
+using NorthWind.Models.account;
 
 namespace NorthWind.Repositories
 {

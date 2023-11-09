@@ -38,13 +38,11 @@ using (var sqlConnection = new SqlConnection(connectionString))
 {
     sqlConnection.Open();
 
-    // Lấy danh sách các bảng từ SQL Server
     DataTable tableSchema = sqlConnection.GetSchema("Tables");
     foreach (DataRow row in tableSchema.Rows)
     {
         string tableName = row["TABLE_NAME"].ToString();
 
-        // Lấy dữ liệu từ SQL Server và chuyển đổi thành BsonDocument
         using (var sqlCommand = new SqlCommand($"SELECT * FROM {tableName}", sqlConnection))
         {
             using (var sqlDataReader = sqlCommand.ExecuteReader())

@@ -192,7 +192,7 @@ public class CategoryController : ControllerBase, ICategoryController
     //            }
     //        }
     //    }
-    //}
+    //}//
     [HttpDelete("{id}")]
     [Authorize]
     public async Task<IActionResult> newDeleteCategory(int id)

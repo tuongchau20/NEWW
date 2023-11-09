@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -20,7 +21,7 @@ namespace NorthWind.Controllers
         ActionResult<CustomerDTO> PostCustomer(CustomerDTO customer);
         Task<IActionResult> PutCustomer(int id, CustomerDTO customer);
     }
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CustomerController : ControllerBase, ICustomerController
@@ -124,8 +125,6 @@ namespace NorthWind.Controllers
             .SetProperty(x => x.City, x => customer.City)
             .SetProperty(x => x.PostalCode, x => customer.PostalCode)
             .SetProperty(x => x.Country, x => customer.Country)
-
-
             );
 
             return Ok();

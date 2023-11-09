@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NorthWind.Models
+namespace NorthWind.Models.account
 {
     public class SignUpModel
     {
